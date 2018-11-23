@@ -3,9 +3,9 @@ const uuidv4            = require('uuid/v4');
 const ip                = require("ip");
 const Schema            = mongoose.Schema;
 const USER_MODEL        = require('./User');
-
+const publicIp          = require('public-ip');
 const InstaceSchema = mongoose.Schema({
-    server  : { type: String, trim: true, default: ip.address() },
+    server  : { type: String, trim: true },
     user    : { type: String, trim: true },
     pwd     : { type: String, trim: true },
     status  : { type: Number, default: 1 },
@@ -31,8 +31,8 @@ class Instace extends InstaceOrigin {
                 });
 
                 if (countInstacesOfOwner > 4) return resolve({ error: true, message: 'instace_of_user_more_5_item' });
-
-                let newItem  = new Instace({ user: uuidv4(), pwd: uuidv4(), owner: owner });
+                let server = await publicIp.v4();
+                let newItem  = new Instace({ user: uuidv4(), pwd: uuidv4(), owner: owner, server: server });
                 let saveItem = await newItem.save();
                 if (!newItem) return resolve({ error: true, message: 'cannot_insert_instace' });
                 return resolve({ error: false, data: saveItem });
