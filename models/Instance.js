@@ -22,6 +22,16 @@ class Instace extends InstaceOrigin {
    static Insert(owner) {
        return new Promise(async resolve => {
             try {
+
+                /**
+                 * kiểm tra 1 user chỉ có 5 instaces
+                 */
+                let countInstacesOfOwner = await Instace.count({
+                    owner: owner
+                });
+
+                if (countInstacesOfOwner > 4) return resolve({ erorr: true, message: 'instace_of_user_more_5_item' });
+
                 let newItem  = new Instace({ user: uuidv4(), pwd: uuidv4(), owner: owner });
                 let saveItem = await newItem.save();
                 if (!newItem) return resolve({ error: true, message: 'cannot_insert_instace' });

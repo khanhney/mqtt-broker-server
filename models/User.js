@@ -16,7 +16,7 @@ const UserSchema = mongoose.Schema({
 const UserOrigin = mongoose.model('user', UserSchema);
 
 class User extends UserOrigin {
-    static Insert(username, password, fullname, email) {
+    static Insert(username, password, email, fullname) {
         return new Promise(async resolve => {
             try {
 

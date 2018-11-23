@@ -13,7 +13,7 @@ let USER_MODEL = require('../models/User');
 
 route.post('/register', async(req, res) => {
     let { username, password, email, fullname  } = req.body;
-    let resp = await USER_MODEL.Insert(username, password, fullname, email);
+    let resp = await USER_MODEL.Insert(username, password, email, fullname);
     res.json(resp);
 });
 

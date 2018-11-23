@@ -25,7 +25,7 @@ server.on('ready', setup);
  */
 // Accepts the connection if the username and password are valid
 var authenticate = async (client, username, password, callback) => {
-  let authorized = await INSTACE_MODEL.findOne({ user: username, pwd: password });
+  let authorized = await INSTACE_MODEL.findOne({ user: username, pwd: password, status: 1 });
   if (authorized) client.user = username;
   callback(null, authorized);
 }
