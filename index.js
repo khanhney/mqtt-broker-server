@@ -68,5 +68,5 @@ const port = process.env.PORT || 5000;
 const uri = 'mongodb://localhost/mqtt_models'
 mongoose.connect(uri, { useNewUrlParser: true });
 mongoose.connection.once('open', ()=>{
-    app.listen(port, ()=> console.log('Server started at port 3000'));
+    app.listen(port, ()=> console.log(`Server started at port ${port}`));
 })
