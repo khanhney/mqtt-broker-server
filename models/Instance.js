@@ -30,7 +30,7 @@ class Instace extends InstaceOrigin {
                     owner: owner
                 });
 
-                if (countInstacesOfOwner > 4) return resolve({ erorr: true, message: 'instace_of_user_more_5_item' });
+                if (countInstacesOfOwner > 4) return resolve({ error: true, message: 'instace_of_user_more_5_item' });
 
                 let newItem  = new Instace({ user: uuidv4(), pwd: uuidv4(), owner: owner });
                 let saveItem = await newItem.save();
