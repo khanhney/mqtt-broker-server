@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+</head>
+<body>
+    <button id="toastrSuccess">success</button> 
+    <button id="toastrWarning">warning</button>
+    <button id="toastrInfo">info</button>
+    <button id="toastrError">error</button>
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script>
+    $(document).ready(function(){
+        // copy trên https://codeseven.github.io/toastr/demo.html
+        const configOptions = function(){
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+                }
+        }
+        //
+        configOptions();
+        $('#toastrSuccess').click(function(){
+            toastr.success('Thành Công');
+        })
+        $('#toastrWarning').click(function(){
+            toastr.warning('Cảnh báo')
+        })
+        $('#toastrInfo').click(function(){
+            toastr.info('Thông tin');
+        })
+        $('#toastrError').click(function(){
+            toastr.error('Error');
+        })
+    })
+</script>
+</html>

@@ -23,20 +23,6 @@ route.get('/', async(req, res) => {
     res.json(listInstacesOfUser);
 });
 
-route.get('/:instaceID', async(req, res) => {
-    let { instaceID }      = req.params;
-    let userID             = req.user._id;
-    let infoInstace        = await INSTACES_MODEL.InstaceDetail(instaceID, userID);
-    res.json(infoInstace);
-});
-
-route.get('/:instaceID/:status', async(req, res) => {
-    let { instaceID, status } = req.params;
-    let  userID               = req.user._id;
-    let updateInstaceUpdate   = await INSTACES_MODEL.UpdateStatus(instaceID, status, userID);
-    return res.json(updateInstaceUpdate);
-});
-
 route.get('/update-user/:instaceID', async(req, res) => {
     let { instaceID }         = req.params;
     let userID                = req.user._id;
@@ -50,4 +36,19 @@ route.get('/update-pwd/:instaceID', async(req, res) => {
     let updateUserInstace     = await INSTACES_MODEL.rotatePwd(instaceID, userID);
     res.json(updateUserInstace);
 });
+
+route.get('/instace-detail/:instaceID', async(req, res) => {
+    let { instaceID }      = req.params;
+    let userID             = req.user._id;
+    let infoInstace        = await INSTACES_MODEL.InstaceDetail(instaceID, userID);
+    res.json(infoInstace);
+});
+
+route.get('/update-status/:instaceID/:status', async(req, res) => {
+    let { instaceID, status } = req.params;
+    let  userID               = req.user._id;
+    let updateInstaceUpdate   = await INSTACES_MODEL.UpdateStatus(instaceID, status, userID);
+    return res.json(updateInstaceUpdate);
+});
+
 module.exports = route;

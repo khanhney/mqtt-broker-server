@@ -11,7 +11,7 @@ const InstaceSchema = mongoose.Schema({
     status  : { type: Number, default: 1 },
     createAt: { type: Date, default: Date.now },
     port    : { type: String, default: '1883' },
-    owner  : {
+    owner   : {
         type: Schema.Types.ObjectId,
         ref : 'user'
     }
