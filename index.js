@@ -47,7 +47,8 @@ server.on('clientConnected', function(client) {
 // app config
 app.set('views', './views');
 app.set('view engine', 'ejs');
-app.use(express.static('./public'));
+app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(path.join(__dirname, '/node_modules')));
 
 app.use('/user', UserRouter);
 app.use('/instaces', InstaceRouter);
@@ -62,7 +63,7 @@ function setup() {
     console.log('Mosca server is up and running')
     server.authenticate       = authenticate;
 }
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 // const uri = 'mongodb://khanhney123:123@ds149934.mlab.com:49934/cnpm'
 const uri = 'mongodb://localhost/mqtt_models'
 mongoose.connect(uri, { useNewUrlParser: true });
