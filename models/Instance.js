@@ -5,7 +5,7 @@ const Schema            = mongoose.Schema;
 const USER_MODEL        = require('./User');
 // const publicIp          = require('public-ip');
 const InstaceSchema = mongoose.Schema({
-    server  : { type: String, trim: true, default: '35.196.78.255' },
+    server  : { type: String, trim: true, default: 'mqtt.iothutech.tk' },
     user    : { type: String, trim: true },
     pwd     : { type: String, trim: true },
     status  : { type: Number, default: 1 },
