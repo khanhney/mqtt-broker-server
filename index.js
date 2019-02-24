@@ -103,13 +103,11 @@ server.on('published', async (packet, client) => {
                 let { orderID } = order;
                 // TODO WITH ORDER GET INFO
                 // let infoOrder = await ORDER_MODEL.getInfo(orderID);
-                if (!infoOrder.error) {
-                    mqttClient.publish(SERVER_SEND_MASTER_CLIENT_CONFIRM_ORDER, JSON.stringify({ orderID }), {
-                        qos: 2, dup: false, retain: true
-                    }, function(err, message){
-                        console.log({ err, message });
-                    });
-                }
+                mqttClient.publish(SERVER_SEND_MASTER_CLIENT_CONFIRM_ORDER, JSON.stringify({ orderID }), {
+                    qos: 2, dup: false, retain: true
+                }, function(err, message){
+                    console.log({ err, message });
+                });
             }
         }
     }
