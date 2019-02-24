@@ -33,7 +33,6 @@ server.on('ready', setup);
 // Accepts the connection if the username and password are valid
 var authenticate = async (client, username, password, callback) => {
   let authorized = await INSTACE_MODEL.findOne({ user: username, pwd: password, status: 1 });
-  console.log({ authorized });
   if (authorized) client.user = username;
   callback(null, authorized);
 }
@@ -117,7 +116,7 @@ app.use('*', (req, res) => {
 
 function setup() {
     console.log('Mosca server is up and running')
-    server.authenticate       = authenticate;
+    // server.authenticate       = authenticate;
 }
 const port = process.env.PORT || 8080;
 // const uri = 'mongodb://khanhney123:123@ds149934.mlab.com:49934/cnpm'
