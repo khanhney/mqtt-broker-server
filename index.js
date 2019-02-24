@@ -97,13 +97,14 @@ server.on('published', async (packet, client) => {
          * TOPIC `CLIENT_SEND_ORDER_SUBMITED`
          */
         if (TOPIC === CLIENT_SEND_ORDER_SUBMITED) {
+            console.log(`SERVER OKOKIE CLIENT_SEND_ORDER_SUBMITED`)
             if (dataTemp && dataTemp!='') {
                 let order = JSON.parse(dataTemp);
                 let { orderID } = order;
                 // TODO WITH ORDER GET INFO
                 // let infoOrder = await ORDER_MODEL.getInfo(orderID);
                 if (!infoOrder.error) {
-                    mqttClient.publish(SERVER_SEND_MASTER_CLIENT_CONFIRM_ORDER, JSON.stringify({orderID}), {
+                    mqttClient.publish(SERVER_SEND_MASTER_CLIENT_CONFIRM_ORDER, JSON.stringify({ orderID }), {
                         qos: 2, dup: false, retain: true
                     }, function(err, message){
                         console.log({ err, message });
