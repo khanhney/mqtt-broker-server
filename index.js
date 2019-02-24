@@ -104,6 +104,7 @@ server.on('published', async (packet, client) => {
                 let { orderID } = order;
                 // TODO WITH ORDER GET INFO
                 // let infoOrder = await ORDER_MODEL.getInfo(orderID);
+                console.log(`server gui master client`);
                 mqttClient.publish(SERVER_SEND_MASTER_CLIENT_CONFIRM_ORDER, JSON.stringify({ orderID }), {
                     qos: 2, dup: false, retain: true
                 }, function(err, message){
@@ -115,7 +116,6 @@ server.on('published', async (packet, client) => {
          * TOPIC `MASTER_CLIENT_SEND_MQTT_BROKER`
          */
         if (TOPIC === MASTER_CLIENT_SEND_MQTT_BROKER) {
-            console.log(`SERVER OKOKIE MASTER_CLIENT_SEND_MQTT_BROKER`)
             if (dataTemp && dataTemp!='') {
                 let order = JSON.parse(dataTemp);
                 // TODO WITH ORDER GET INFO
@@ -127,7 +127,6 @@ server.on('published', async (packet, client) => {
                 });
             }
         }
-        
     }
 });
 
