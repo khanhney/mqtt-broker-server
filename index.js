@@ -22,7 +22,8 @@ const { moscaSetting,
     SERVER_SEND_EVENT_USER_END_BTN, NODERED_SEND_RESULT_SERVER, SERVER_SEND_RESULT_BROWSER,
     NODERED_SEND_EVENT_USER_END_BTN, NODERED_SEND_EVENT_USER_START_BTN,
     SERVER_SEND_KEY_NODERED,
-    CLIENT_SEND_ORDER_SUBMITED, SERVER_SEND_MASTER_CLIENT_CONFIRM_ORDER
+    CLIENT_SEND_ORDER_SUBMITED, SERVER_SEND_MASTER_CLIENT_CONFIRM_ORDER,
+    MASTER_CLIENT_SEND_MQTT_BROKER, BROKER_SEND_INFO_ORDER_CLIENT_DASHBOARD
 } = require('./constants/setting');
 const server          = new mosca.Server(moscaSetting);
 const mqttClient      = mqtt.connect(WS, {  keepalive: 0 });
@@ -110,6 +111,23 @@ server.on('published', async (packet, client) => {
                 });
             }
         }
+        /**
+         * TOPIC `MASTER_CLIENT_SEND_MQTT_BROKER`
+         */
+        if (TOPIC === MASTER_CLIENT_SEND_MQTT_BROKER) {
+            console.log(`SERVER OKOKIE MASTER_CLIENT_SEND_MQTT_BROKER`)
+            if (dataTemp && dataTemp!='') {
+                let order = JSON.parse(dataTemp);
+                // TODO WITH ORDER GET INFO
+                // let infoOrder = await ORDER_MODEL.getInfo(orderID);
+                mqttClient.publish(BROKER_SEND_INFO_ORDER_CLIENT_DASHBOARD, JSON.stringify({ order }), {
+                    qos: 2, dup: false, retain: true
+                }, function(err, message){
+                    console.log({ err, message });
+                });
+            }
+        }
+        
     }
 });
 
