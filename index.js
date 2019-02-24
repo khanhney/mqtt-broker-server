@@ -5,9 +5,7 @@ let bodyParser  = require('body-parser');
 let mongoose    = require('mongoose');
 let cors        = require('cors');
 let path        = require('path');
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded())
-app.use(cors({}))
+let mqtt        = require('mqtt');
 /**
  * INTERNAL MODULE
  */
@@ -15,9 +13,18 @@ let INSTACE_MODEL = require('./models/Instance');
 let UserRouter    = require('./routers/user');
 let InstaceRouter = require('./routers/instaces');
 
-const { moscaSetting } = require('./constants/setting');
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded())
+app.use(cors({}))
+const { moscaSetting,
+    NODE_RED_SEND_SERVER, SERVER_SEND_BROWSER, WS,
+    USER_CLICK_KEY, SERVER_SEND_EVENT_USER_START_BTN, 
+    SERVER_SEND_EVENT_USER_END_BTN, NODERED_SEND_RESULT_SERVER, SERVER_SEND_RESULT_BROWSER,
+    NODERED_SEND_EVENT_USER_END_BTN, NODERED_SEND_EVENT_USER_START_BTN,
+    SERVER_SEND_KEY_NODERED } = require('./constants/setting');
+const server          = new mosca.Server(moscaSetting);
+const mqttClient      = mqtt.connect(WS, {  keepalive: 0 });
 
-var server = new mosca.Server(moscaSetting);
 server.on('ready', setup);
 
 /**
@@ -34,8 +41,55 @@ var authenticate = async (client, username, password, callback) => {
  */
 
 // fired when a message is received
-server.on('published', function(packet, client) {
-  console.log('Published', packet.topic, packet.payload.toString('utf8'));
+server.on('published', async (packet, client) => {
+  if (!packet.topic.includes('$SYS')) {
+        // console.log('Published', packet.topic, packet.payload.toString('utf8'));
+        let TOPIC       = packet.topic;
+        let dataTemp    = packet.payload.toString();
+
+        /**
+         * TOPIC 'NODE_RED_SEND_SERVER'
+         */
+        if (TOPIC == NODE_RED_SEND_SERVER) {
+            mqttClient.publish(SERVER_SEND_BROWSER, dataTemp, 
+            { qos: 2, retain: true })
+        }
+
+        /**
+         * TOPIC `USER_CLICK_KEY` RECEIVE FROM BROWSER
+         */
+        if (TOPIC == USER_CLICK_KEY) {
+            console.log(`HELLO WOLRD`);
+            mqttClient.publish(SERVER_SEND_KEY_NODERED, dataTemp, 
+            { qos: 2, retain: true })
+        }
+
+        /**
+         * TOPIC 'NODERED_SEND_EVENT_USER_START_BTN'
+         * BROWSER || bắt đầu nút loading ở trang web
+         */
+        if (TOPIC == NODERED_SEND_EVENT_USER_START_BTN) {
+            mqttClient.publish(SERVER_SEND_EVENT_USER_START_BTN, SERVER_SEND_EVENT_USER_START_BTN, 
+            { qos: 2, retain: true });
+        }
+
+        /**
+         * TOPIC 'NODERED_SEND_EVENT_USER_END_BTN'
+         * BROWSER || kết thúc nút loading ở trang web
+         */
+        if (TOPIC == NODERED_SEND_EVENT_USER_END_BTN) {
+            mqttClient.publish(SERVER_SEND_EVENT_USER_END_BTN, SERVER_SEND_EVENT_USER_END_BTN,
+            { qos: 2, retain: true });
+        }
+
+        /**
+         * TOPIC 'NODERED_SEND_RESULT_SERVER' 
+         */
+        if (TOPIC == NODERED_SEND_RESULT_SERVER) {
+            mqttClient.publish(SERVER_SEND_RESULT_BROWSER, dataTemp, 
+            { qos: 2, retain: true });
+        }
+    }
 });
 
 server.on('clientConnected', function(client) {
@@ -55,13 +109,14 @@ app.use('/instaces', InstaceRouter);
 
 app.get('/khanhney', (req, res) => res.json({ message: 'test_success' }));
 
+
 app.use('*', (req, res) => {
     res.sendFile(path.join(__dirname + '/views/index.html'));
 })
 
 function setup() {
     console.log('Mosca server is up and running')
-    server.authenticate       = authenticate;
+    // server.authenticate       = authenticate;
 }
 const port = process.env.PORT || 8080;
 // const uri = 'mongodb://khanhney123:123@ds149934.mlab.com:49934/cnpm'
