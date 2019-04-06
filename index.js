@@ -117,7 +117,6 @@ server.on('published', async (packet, client) => {
                 let order = JSON.parse(dataTemp);
                 // TODO WITH ORDER GET INFO
                 // let infoOrder = await ORDER_MODEL.getInfo(orderID);
-                console.log(`MASTER SEND INFO`)
                 mqttClient.publish(BROKER_SEND_INFO_ORDER_CLIENT_DASHBOARD, JSON.stringify({ order }), {
                     qos: 2, dup: false, retain: true
                 }, function(err, message){
