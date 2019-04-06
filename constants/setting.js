@@ -10,7 +10,7 @@ const settingWithRedis = {
 };
 
 exports.moscaSetting = {
-    port: 1883,
+    port: 1884,
     backend: settingWithRedis,
     persistence: {
       factory: mosca.persistence.Redis
