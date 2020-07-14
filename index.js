@@ -154,8 +154,7 @@ function setup() {
     // server.authenticate       = authenticate;
 }
 const port = process.env.PORT || 8080;
-// const uri = 'mongodb://khanhney123:123@ds149934.mlab.com:49934/cnpm'
-const uri = 'mongodb://localhost/mqtt_models'
+const uri = 'mongodb://localhost/mqtt_fiona_v2'
 mongoose.connect(uri, { useNewUrlParser: true });
 mongoose.connection.once('open', ()=>{
     app.listen(port, '0.0.0.0', ()=> console.log(`Server started at port ${port}`));
